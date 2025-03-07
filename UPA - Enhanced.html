@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unexplained Phenomena Archives</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #0a0a14;
+            color: #7af7ee;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            transition: background-color 1s;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(25, 118, 210, 0.05) 0%, transparent 80%),
+                linear-gradient(rgba(0, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 20px 20px, 20px 20px;
+            background-position: 0 0, 0 0, 0 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        header {
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #00f7ff;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(0, 247, 255, 0.5);
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+        
+        .subtitle {
+            font-style: italic;
+            color: #7af7ee;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+        
+        .terminal-interface {
+            background-color: rgba(16, 26, 35, 0.9);
+            border: 1px solid #2a6277;
+            padding: 30px;
+            border-radius: 5px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 25px rgba(0, 247, 255, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .terminal-interface::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 25px;
+            background: linear-gradient(to bottom, rgba(0, 247, 255, 0.05), transparent);
+        }
+        
+        .access-btn {
+            background-color: #0a323d;
+            color: #00f7ff;
+            border: 1px solid #1a7385;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.2);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .access-btn:hover {
+            background-color: #134857;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.4);
+            text-shadow: 0 0 5px rgba(0, 247, 255, 0.7);
+        }
+        
+        .access-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+        }
+        
+        .report {
+            background-color: #f0f0f0;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 0 20px rgba(0, 247, 255, 0.15);
+            position: relative;
+            color: #333;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            text-align: left;
+            transform: scale(0);
+            opacity: 0;
+            transition: transform 0.5s, opacity 0.5s;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-image: linear-gradient(#f0f0f0 7px, #e0e0e0 1px);
+            background-size: 100% 8px;
+        }
+        
+        .report.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .report-header {
+            display: flex;
+            width: 100%;
+            justify-content: space-between;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .report-content {
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+        }
+        
+        .report-footer {
+            margin-top: 20px;
+            border-top: 1px solid #ccc;
+            padding-top: 10px;
+            width: 100%;
+            font-size: 0.8rem;
+            color: #777;
+            font-style: italic;
+        }
+        
+        .loading {
+            display: none;
+            margin-top: 20px;
+            font-style: italic;
+            color: #7af7ee;
+        }
+        
+        .classification {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #f02020;
+            font-weight: bold;
+            font-family: 'Arial', sans-serif;
+            font-size: 1rem;
+            transform: rotate(15deg);
+            border: 2px solid #f02020;
+            padding: 5px 10px;
+            opacity: 0.8;
+        }
+        
+        .redacted {
+            background-color: #000;
+            color: transparent;
+            user-select: none;
+            display: inline-block;
+            line-height: 1em;
+            padding: 0 3px;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.3s;
+        }
+        
+        .redacted:hover {
+            background-color: #222;
+        }
+        
+        .redacted-revealed {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: #000;
+            text-decoration: line-through;
+            cursor: default;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 0.8rem;
+            color: #2a6277;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .branding {
+            font-size: 0.7rem;
+            opacity: 0.4;
+            transition: opacity 0.3s;
+        }
+        
+        .branding:hover {
+            opacity: 0.8;
+        }
+        
+        .support-buttons {
+            display: flex;
+            gap: 15px;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+        
+        .support-buttons:hover {
+            opacity: 0.7;
+        }
+        
+        .support-btn {
+            color: #00f7ff;
+            text-decoration: none;
+            font-size: 0.7rem;
+            background-color: rgba(10, 50, 61, 0.5);
+            padding: 5px 10px;
+            border-radius: 3px;
+            border: 1px solid rgba(26, 115, 133, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .support-btn:hover {
+            background-color: rgba(19, 72, 87, 0.7);
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.2);
+        }
+        
+        .glitch {
+            position: relative;
+        }
+        
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .glitch::before {
+            left: 2px;
+            text-shadow: -1px 0 red;
+            animation: noise-anim-1 2s infinite linear alternate-reverse;
+        }
+        
+        .glitch::after {
+            left: -2px;
+            text-shadow: 1px 0 blue;
+            animation: noise-anim-2 3s infinite linear alternate-reverse;
+        }
+        
+        @keyframes noise-anim-1 {
+            0% {
+                clip-path: inset(40% 0 61% 0);
+            }
+            20% {
+                clip-path: inset(92% 0 1% 0);
+            }
+            40% {
+                clip-path: inset(43% 0 1% 0);
+            }
+            60% {
+                clip-path: inset(25% 0 58% 0);
+            }
+            80% {
+                clip-path: inset(54% 0 7% 0);
+            }
+            100% {
+                clip-path: inset(58% 0 43% 0);
+            }
+        }
+        
+        @keyframes noise-anim-2 {
+            0% {
+                clip-path: inset(26% 0 55% 0);
+            }
+            20% {
+                clip-path: inset(1% 0 88% 0);
+            }
+            40% {
+                clip-path: inset(10% 0 71% 0);
+            }
+            60% {
+                clip-path: inset(83% 0 7% 0);
+            }
+            80% {
+                clip-path: inset(23% 0 14% 0);
+            }
+            100% {
+                clip-path: inset(63% 0 27% 0);
+            }
+        }
+        
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: rgba(0, 247, 255, 0.3);
+            animation: scan 4s linear infinite;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        
+        @keyframes scan {
+            0% {
+                top: 0%;
+            }
+            100% {
+                top: 100%;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .report {
+                padding: 20px;
+            }
+            
+            .report-content {
+                font-size: 1rem;
+            }
+        }
+
+        /* New styles for authentication screen */
+        .auth-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0a0a14;
+            z-index: 100;
+            transition: transform 1.5s ease;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(25, 118, 210, 0.05) 0%, transparent 80%),
+                linear-gradient(rgba(0, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 20px 20px, 20px 20px;
+        }
+
+        .auth-screen.hidden {
+            transform: translateY(-100%);
+        }
+
+        .auth-container {
+            background-color: rgba(16, 26, 35, 0.9);
+            border: 1px solid #2a6277;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 0 25px rgba(0, 247, 255, 0.15);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .auth-container h2 {
+            color: #00f7ff;
+            margin-bottom: 20px;
+            font-weight: normal;
+            letter-spacing: 2px;
+        }
+
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .auth-form input {
+            background-color: rgba(10, 20, 30, 0.7);
+            border: 1px solid #2a6277;
+            padding: 12px;
+            color: #00f7ff;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .auth-form input:focus {
+            border-color: #00f7ff;
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+        }
+
+        .auth-form button {
+            background-color: #0a323d;
+            color: #00f7ff;
+            border: 1px solid #1a7385;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            font-size: 16px;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .auth-form button:hover {
+            background-color: #134857;
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+        }
+
+        .auth-error {
+            color: #ff5a5a;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            min-height: 20px;
+        }
+
+        .biometric-scan {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .scan-container {
+            width: 200px;
+            height: 200px;
+            border: 1px solid #2a6277;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fingerprint-scan {
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTEwMCA0MEMxMDAgNDAgODAgNjAgODAgODBDODAgMTAwIDEyMCAxMDAgMTIwIDgwQzEyMCA2MCAxMDAgNDAgMTAwIDQwWiIgc3Ryb2tlPSIjMDBmN2ZmIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMTAwIDUwQzEwMCA1MCA4NSA2NSA4NSA4MEM4NSA5NSAxMTUgOTUgMTE1IDgwQzExNSA2NSAxMDAgNTAgMTAwIDUwWiIgc3Ryb2tlPSIjMDBmN2ZmIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMTAwIDYwQzEwMCA2MCA5MCA3MCA5MCA4MEM5MCA5MCAxMTAgOTAgMTEwIDgwQzExMCA3MCAxMDAgNjAgMTAwIDYwWiIgc3Ryb2tlPSIjMDBmN2ZmIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNMTAwIDcwQzEwMCA3MCA5NSA3NSA5NSA4MEM5NSA4NSAxMDUgODUgMTA1IDgwQzEwNSA3NSAxMDAgNzAgMTAwIDcwWiIgc3Ryb2tlPSIjMDBmN2ZmIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNOTUgODVDOTUgODUgMTAwIDkwIDEwNSA4NSIgc3Ryb2tlPSIjMDBmN2ZmIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNOTAgOTBDOTAgOTAgMTAwIDEwMCAxMTAgOTAiIHN0cm9rZT0iIzAwZjdmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTg1IDk1Qzg1IDk1IDEwMCAxMTAgMTE1IDk1IiBzdHJva2U9IiMwMGY3ZmYiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik04MCAxMDBDODAgMTAwIDEwMCAxMjAgMTIwIDEwMCIgc3Ryb2tlPSIjMDBmN2ZmIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNNzUgMTA1Qzc1IDEwNSAxMDAgMTMwIDEyNSAxMDUiIHN0cm9rZT0iIzAwZjdmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTcwIDExMEM3MCAxMTAgMTAwIDE0MCAxMzAgMTEwIiBzdHJva2U9IiMwMGY3ZmYiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik02NSAxMTVDNjUgMTE1IDEwMCAxNTAgMTM1IDExNSIgc3Ryb2tlPSIjMDBmN2ZmIiBzdHJva2Utd2lkdGg9IjIiLz48cGF0aCBkPSJNNjAgMTIwQzYwIDEyMCAxMDAgMTYwIDE0MCAxMjAiIHN0cm9rZT0iIzAwZjdmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+');
+            background-size: contain;
+            opacity: 0;
+            position: absolute;
+            animation: pulse 2s infinite;
+        }
+
+        .scan-line-biometric {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(to bottom, rgba(0, 247, 255, 0.8), rgba(0, 247, 255, 0.2));
+            animation: scan-biometric 3s linear infinite;
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.5);
+        }
+
+        .retina-scan {
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI2MCIgc3Ryb2tlPSIjMDBmN2ZmIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjUwIiBzdHJva2U9IiMwMGY3ZmYiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iNDAiIHN0cm9rZT0iIzAwZjdmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSIzMCIgc3Ryb2tlPSIjMDBmN2ZmIiBzdHJva2Utd2lkdGg9IjIiLz48Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjIwIiBzdHJva2U9IiMwMGY3ZmYiIHN0cm9rZS13aWR0aD0iMiIvPjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iMTAiIGZpbGw9IiMwMGY3ZmYiLz48bGluZSB4MT0iMTAwIiB5MT0iMzAiIHgyPSIxMDAiIHkyPSI0MCIgc3Ryb2tlPSIjMDBmN2ZmIiBzdHJva2Utd2lkdGg9IjIiLz48bGluZSB4MT0iMTAwIiB5MT0iMTYwIiB4Mj0iMTAwIiB5Mj0iMTcwIiBzdHJva2U9IiMwMGY3ZmYiIHN0cm9rZS13aWR0aD0iMiIvPjxsaW5lIHgxPSIzMCIgeTE9IjEwMCIgeDI9IjQwIiB5Mj0iMTAwIiBzdHJva2U9IiMwMGY3ZmYiIHN0cm9rZS13aWR0aD0iMiIvPjxsaW5lIHgxPSIxNjAiIHkxPSIxMDAiIHgyPSIxNzAiIHkyPSIxMDAiIHN0cm9rZT0iIzAwZjdmZiIgc3Ryb2tlLXdpZHRoPSIyIi8+PGxpbmUgeDE9IjUxLjIxNCIgeTE9IjUxLjIxNCIgeDI9IjU4LjA3MSIgeTI9IjU4LjA3MSIgc3Ryb2tlPSIjMDBmN2ZmIiBzdHJva2Utd2lkdGg9IjIiLz48bGluZSB4MT0iMTQxLjkyOSIgeTE9IjE0MS45MjkiIHgyPSIxNDguNzg3IiB5Mj0iMTQ4Ljc4NyIgc3Ryb2tlPSIjMDBmN2ZmIiBzdHJva2Utd2lkdGg9IjIiLz48bGluZSB4MT0iNTEuMjE0MiIgeTE9IjE0OC43ODYiIHgyPSI1OC4wNzExIiB5Mj0iMTQxLjkyOSIgc3Ryb2tlPSIjMDBmN2ZmIiBzdHJva2Utd2lkdGg9IjIiLz48bGluZSB4MT0iMTQxLjkyOSIgeTE9IjU4LjA3MSIgeDI9IjE0OC43ODYiIHkyPSI1MS4yMTQyIiBzdHJva2U9IiMwMGY3ZmYiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==');
+            background-size: contain;
+            opacity: 0;
+            position: absolute;
+            animation: pulse 2s infinite;
+        }
+
+        .face-scan {
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            position: absolute;
+            overflow: hidden;
+        }
+
+        .face-scan-outline {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid #00f7ff;
+            box-shadow: 0 0 15px rgba(0, 247, 255, 0.5) inset;
+        }
+
+        .face-scan-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, rgba(0, 247, 255, 0.3) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 247, 255, 0.3) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .face-scan-camera {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) brightness(0.7) contrast(1.2) hue-rotate(180deg);
+            opacity: 0.8;
+            display: none;
+        }
+
+        .face-scan-markers {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .face-marker {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #00f7ff;
+            border-radius: 50%;
+        }
+
+        .scan-status {
+            color: #00f7ff;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            height: 20px;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0.2;
+            }
+        }
+
+        @keyframes scan-biometric {
+            0% {
+                top: 0;
+            }
+            100% {
+                top: 100%;
+            }
+        }
+
+        /* Interface static effect */
+        .static-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiBmaWx0ZXI9InVybCgjYSkiIG9wYWNpdHk9Ii4wNSIvPjwvc3ZnPg==');
+            pointer-events: none;
+            opacity: 0.15;
+            z-index: 10;
+        }
+
+        .interference {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            pointer-events: none;
+            z-index: 20;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .interference.active {
+            opacity: 1;
+        }
+
+        .interference::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 247, 255, 0.05), rgba(0, 247, 255, 0.02));
+            animation: interference-anim 0.2s infinite;
+        }
+
+        @keyframes interference-anim {
+            0% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(16, 26, 35, 0.9);
+            border: 1px solid #2a6277;
+            padding: 15px;
+            width: 280px;
+            box-shadow: 0 0 25px rgba(0, 247, 255, 0.15);
+            color: #7af7ee;
+            font-size: 0.8rem;
+            z-index: 50;
+            transform: translateX(320px);
+            transition: transform 0.5s;
+            line-height: 1.5;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(42, 98, 119, 0.3);
+            padding-bottom: 3px;
+        }
+
+        .notification-title {
+            font-weight: bold;
+            color: #00f7ff;
+            font-size: 0.9rem;
+        }
+
+        .notification-close {
+            cursor: pointer;
+            font-size: 1rem;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+        }
+
+        .notification-close:hover {
+            opacity: 1;
+        }
+
+        /* Category selector */
+        .category-selector {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .category-btn {
+            background-color: rgba(10, 50, 61, 0.7);
+            border: 1px solid #1a7385;
+            color: #7af7ee;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background-color: #134857;
+            color: #00f7ff;
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Authentication Screen -->
+    <div class="auth-screen">
+        <div class="auth-container">
+            <h2>FEDERAL BUREAU OF ANOMALOUS RESEARCH</h2>
+            <p>CLASSIFIED DATABASE ACCESS TERMINAL</p>
+            <div class="auth-form">
+                <input type="text" id="userId" placeholder="USER ID" autocomplete="off">
+                <input type="password" id="password" placeholder="PASSWORD" autocomplete="off">
+                <button id="loginBtn">AUTHENTICATE</button>
+            </div>
+            <div class="auth-error" id="authError"></div>
+            
+            <div class="biometric-scan" id="biometricScan">
+                <div class="scan-container" id="scanContainer">
+                    <div class="fingerprint-scan" id="fingerprintScan"></div>
+                    <div class="retina-scan" id="retinaScan"></div>
+                    <div class="face-scan" id="faceScan">
+                        <div class="face-scan-outline"></div>
+                        <div class="face-scan-grid"></div>
+                        <video class="face-scan-camera" id="faceScanCamera" autoplay muted playsinline></video>
+                        <div class="face-scan-markers" id="faceMarkers"></div>
+                    </div>
+                    <div class="scan-line-biometric"></div>
+                </div>
+                <div class="scan-status" id="scanStatus">INITIALIZING SCAN...</div>
+            </div>
+        </div>
+        <div class="scan-line"></div>
+    </div>
+
+    <!-- Visual effects -->
+    <div class="static-overlay"></div>
+    <div class="interference" id="interference"></div>
+    
+    <!-- Notification container -->
+    <div class="notification" id="notification">
+        <div class="notification-header">
+            <div class="notification-title">INCOMING TRANSMISSION</div>
+            <div class="notification-close" id="notificationClose">×</div>
+        </div>
+        <div class="notification-content" id="notificationContent">
+            Message content here
+        </div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <h1>UNEXPLAINED PHENOMENA ARCHIVES</h1>
+            <div class="subtitle">Project Blue Book - Majestic-12 - Delta Green</div>
+        </header>
+        
+        <div class="terminal-interface">
+            <div class="scan-line"></div>
+            <p>WELCOME TO CLASSIFIED DATABASE SYSTEM</p>
+            <p>AUTHORIZATION LEVEL: COSMIC TOP SECRET</p>
+            <p>WARNING: UNAUTHORIZED ACCESS IS PUNISHABLE UNDER NATIONAL SECURITY ACT</p>
+            <p>&nbsp;</p>
+            
+            <div class="category-selector" id="categorySelector">
+                <button class="category-btn active" data-category="all">All Files</button>
+                <button class="category-btn" data-category="ufo">UFO Sightings</button>
+                <button class="category-btn" data-category="cryptid">Cryptid Encounters</button>
+                <button class="category-btn" data-category="psychic">Psychic Phenomena</button>
+                <button class="category-btn" data-category="temporal">Temporal Anomalies</button>
+            </div>
+            
+            <button class="access-btn">RETRIEVE FILE</button>
+            <div class="loading">Decrypting data...</div>
+        </div>
+        
+        <div class="report">
+            <div class="classification">TOP SECRET</div>
+            <div class="report-header">
+                <div class="file-number">CASE FILE: #000</div>
+                <div class="date">DATE: 00/00/0000</div>
+            </div>
+            <div class="report-content"></div>
+            <div class="report-footer">
+                END OF REPORT - DISTRIBUTION RESTRICTED
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div>FEDERAL BUREAU OF ANOMALOUS RESEARCH - EYES ONLY</div>
+            <div class="branding">Developed by CygRyu</div>
+            <div class="support-buttons">
+                <a href="https://ko-fi.com/cygryu" target="_blank" class="support-btn">Ko-Fi</a>
+                <a href="https://www.paypal.com/paypalme/sofiansu?country.x=ID&locale.x=en_US" target="_blank" class="support-btn">PayPal</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // DOM elements
+        const accessBtn = document.querySelector('.access-btn');
+        const report = document.querySelector('.report');
+        const reportContent = document.querySelector('.report-content');
+        const loading = document.querySelector('.loading');
+        const body = document.querySelector('body');
+        const fileNumber = document.querySelector('.file-number');
+        const dateField = document.querySelector('.date');
+        const interference = document.getElementById('interference');
+        const notification = document.getElementById('notification');
+        const notificationContent = document.getElementById('notificationContent');
+        const notificationClose = document.getElementById('notificationClose');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const categorySelector = document.getElementById('categorySelector');
+        
+        // Authentication elements
+        const authScreen = document.querySelector('.auth-screen');
+        const userId = document.getElementById('userId');
+        const password = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const authError = document.getElementById('authError');
+        const biometricScan = document.getElementById('biometricScan');
+        const fingerprintScan = document.getElementById('fingerprintScan');
+        const retinaScan = document.getElementById('retinaScan');
+        const faceScan = document.getElementById('faceScan');
+        const faceScanCamera = document.getElementById('faceScanCamera');
+        const scanStatus = document.getElementById('scanStatus');
+        const faceMarkers = document.getElementById('faceMarkers');
+        
+        // Current category
+        let currentCategory = 'all';
+        
+        // Login attempts counter
+        let loginAttempts = 5;
+        
+        // Face scan points
+        const facePoints = [
+            {x: 50, y: 30}, {x: 150, y: 30}, // Eyes
+            {x: 100, y: 60}, // Nose
+            {x: 70, y: 100}, {x: 130, y: 100}, // Mouth corners
+            {x: 40, y: 50}, {x: 160, y: 50}, // Temples
+            {x: 40, y: 120}, {x: 160, y: 120}, // Jaw
+            {x: 100, y: 130} // Chin
+        ];
+        
+        // Arrays for message components by category
+        const phenomena = {
+            ufo: {
+                timeframes: [
+                    "0300 hours on June 12, 1947", 
+                    "During the Perseid meteor shower of 1998", 
+                    "Following abrupt radar interference at NORAD",
+                    "Precisely 37 minutes after atmospheric disturbance",
+                    "During simultaneous power outages in three states",
+                    "At 2217 hours during an unexplained radio blackout"
+                ],
+                entities: [
+                    "unidentified luminous objects in triangular formation",
+                    "a craft of apparent non-terrestrial origin",
+                    "disc-shaped craft exhibiting impossible acceleration vectors",
+                    "a massive object briefly appearing on radar before vanishing",
+                    "a silent craft with advanced gravitational distortion capabilities",
+                    "multiple objects performing synchronized maneuvers defying known physics"
+                ],
+                locations: [
+                    "Area 51, Nevada",
+                    "the Bermuda Triangle",
+                    "directly above White Sands Missile Range",
+                    "a classified military installation",
+                    "the site of previously classified nuclear incidents",
+                    "a convergence point of reported aerospace anomalies"
+                ],
+                details: [
+                    "Multiple military witnesses were immediately reassigned.",
+                    "Recovered materials exhibited impossible metallurgical properties.",
+                    "All digital records of the event were corrupted or erased.",
+                    "The craft demonstrated awareness of being observed and actively avoided tracking.",
+                    "Similar craft have been documented at precisely 7-year intervals since 1952.",
+                    "Military aircraft sent to intercept experienced complete systems failure."
+                ],
+                sections: [
+                    "WITNESS DEBRIEFING: Subject maintains the craft was controlled by 'something not recognized as conventional life'. Request full psychological evaluation.",
+                    "PHYSICAL EVIDENCE: Soil samples from landing site contain isotopic ratios inconsistent with Earth's natural composition. Sample transferred to [REDACTED] for analysis.",
+                    "TECHNOLOGICAL ASSESSMENT: If genuine, propulsion system operating on principles at least 300 years beyond current theoretical understanding.",
+                    "RADIATION FINDINGS: Unusual neutron emissions detected. Medical monitoring of exposure team ongoing."
+                ]
+            },
+            cryptid: {
+                timeframes: [
+                    "During an ecological survey expedition", 
+                    "At approximately 0200 hours during the new moon", 
+                    "While conducting wildlife population monitoring",
+                    "During unusually cold weather conditions",
+                    "After reports of livestock mutilations",
+                    "Following unusual seismic activity"
+                ],
+                entities: [
+                    "a bipedal entity matching no known biological classification",
+                    "humanoid figures exhibiting impossible physical characteristics",
+                    "an unclassified marine organism of unprecedented size",
+                    "a vertebrate with anatomical features inconsistent with evolutionary models",
+                    "an entity capable of mimicking human speech patterns",
+                    "biological material containing no recognizable DNA structure"
+                ],
+                locations: [
+                    "a remote location in the Siberian wilderness",
+                    "deep within the Appalachian mountain range",
+                    "a deep ocean trench previously thought uninhabitable",
+                    "the vicinity of ancient megalithic structures",
+                    "a densely forested area with historical sighting clusters",
+                    "a network of previously unmapped cave systems"
+                ],
+                details: [
+                    "Local wildlife exhibited unusual behavior for months following the incident.",
+                    "All photographic evidence was confiscated by unnamed government officials.",
+                    "Genetic testing of local fauna revealed unexplained mutations in subsequent generations.",
+                    "Indigenous populations have extensive oral histories describing identical entities.",
+                    "The entity demonstrated active avoidance of electronic surveillance equipment.",
+                    "Tissue samples decomposed at an accelerated rate preventing thorough analysis."
+                ],
+                sections: [
+                    "MORPHOLOGICAL ANALYSIS: Entity displays characteristics of multiple taxonomic kingdoms simultaneously. No evolutionary pathway can explain observed features.",
+                    "BEHAVIORAL PATTERNS: Subject displays evidence of high intelligence and possible telepathic abilities when interacting with research team.",
+                    "HISTORICAL CONTEXT: Archival research indicates similar entities have been documented in classified military reports dating to 1873.",
+                    "CONTAINMENT RECOMMENDATIONS: Current protocols inadequate. Recommend immediate implementation of SANDSTONE-level quarantine procedures."
+                ]
+            },
+            psychic: {
+                timeframes: [
+                    "During controlled laboratory testing", 
+                    "In the midst of a geomagnetic storm", 
+                    "While conducting Project STARGATE protocols",
+                    "During a double-blind psi evaluation",
+                    "Following exposure to the stimulus object",
+                    "During trial phase of the LOOKING GLASS initiative"
+                ],
+                entities: [
+                    "multiple witnesses reporting identical hallucinations",
+                    "reported telekinetic and telepathic phenomena",
+                    "a non-physical intelligence capable of manipulating electronic equipment",
+                    "subjects displaying unprecedented accuracy in remote viewing sessions",
+                    "individuals demonstrating temporary enhancement of cognitive abilities",
+                    "collective consciousness phenomena affecting unrelated subjects simultaneously"
+                ],
+                locations: [
+                    "the former MKULTRA research facility",
+                    "a location with repeated historical psi events",
+                    "a facility designed to block all electromagnetic signals",
+                    "precisely along the 33rd parallel",
+                    "a location featuring extreme magnetic anomalies",
+                    "the specialized parapsychology wing at [REDACTED] university"
+                ],
+                details: [
+                    "The incident coincided with a significant deviation in the Earth's magnetic field.",
+                    "Subjects were able to access information with no conventional explanation.",
+                    "Subsequent reconnaissance revealed geometric patterns visible only in certain light spectrums.",
+                    "EEG readings showed synchronized brain activity between physically separated subjects.",
+                    "Abilities diminished precisely 37 hours after initial manifestation in all cases.",
+                    "Subject accurately predicted details of future events later confirmed."
+                ],
+                sections: [
+                    "NEUROLOGICAL FINDINGS: Brain scans reveal unusual activity in regions not typically associated with sensory processing. Recommend expanded TENSOR protocol.",
+                    "STATISTICAL ANALYSIS: Results exceed chance by factor of 10^12. No conventional explanation accounts for observed phenomena.",
+                    "REPLICATION ATTEMPTS: Four subsequent trials attempted. Success achieved only when original subject was within 2km of testing facility.",
+                    "THEORETICAL FRAMEWORK: Findings support REFLECTION THEORY as proposed by Dr. [REDACTED] in the classified 1967 BLUE ROOM proceedings."
+                ]
+            },
+            temporal: {
+                timeframes: [
+                    "At precisely 2:37 AM during the summer solstice", 
+                    "During the Pendulum-4 temporal field test", 
+                    "Following activation of the CHRONOS device",
+                    "At the calculated nexus point of the temporal anomaly",
+                    "During the quantum entanglement experiment",
+                    "After the particle accelerator malfunction"
+                ],
+                entities: [
+                    "a temporal anomaly affecting local residents",
+                    "multiple instances of time dilation within contained perimeter",
+                    "inverted causality chains within the observation chamber",
+                    "a localized field where objects age at accelerated rates",
+                    "individuals experiencing subjective temporal displacement",
+                    "a region where probabilistic outcomes occur simultaneously"
+                ],
+                locations: [
+                    "the convergence point of three ley lines",
+                    "the Antarctic research station",
+                    "directly beneath unexplained weather phenomena",
+                    "the quantum physics laboratory",
+                    "the site of the JANUS-7 experiment",
+                    "an area experiencing persistent déjà vu reports"
+                ],
+                details: [
+                    "Local time-keeping devices were affected, showing a consistent 37-minute deviation.",
+                    "Individuals within the affected zone reported experiencing the same day repeatedly.",
+                    "Communication with the site is only possible during specific astronomical alignments.",
+                    "Three investigators assigned to the case have since disappeared without explanation.",
+                    "Some witnesses report having encountered their future selves during the incident.",
+                    "Electronic records show events occurring before their causal triggers."
+                ],
+                sections: [
+                    "CHRONOMETRIC ANALYSIS: Local space-time curvature measured at 17% deviation from normal parameters. Consistent with RAVEN-FISHER model of artificial distortion.",
+                    "WITNESS ACCOUNTS: Multiple subjects report experiencing events that 'haven't happened yet' with verified precognitive accuracy.",
+                    "QUANTUM MEASUREMENTS: Particle behavior within affected zone demonstrates nonlinear temporal properties. Standard uncertainty principles do not apply.",
+                    "CONTAINMENT STATUS: Temporal irregularities continuing to spread at rate of approximately 3.7cm per day. BLACKTHAW protocols initiated."
+                ]
+            }
+        };
+        
+        // Add general category that combines elements from all specific categories
+        phenomena.all = {
+            timeframes: [].concat(
+                phenomena.ufo.timeframes,
+                phenomena.cryptid.timeframes,
+                phenomena.psychic.timeframes,
+                phenomena.temporal.timeframes
+            ),
+            entities: [].concat(
+                phenomena.ufo.entities,
+                phenomena.cryptid.entities,
+                phenomena.psychic.entities,
+                phenomena.temporal.entities
+            ),
+            locations: [].concat(
+                phenomena.ufo.locations,
+                phenomena.cryptid.locations,
+                phenomena.psychic.locations,
+                phenomena.temporal.locations
+            ),
+            details: [].concat(
+                phenomena.ufo.details,
+                phenomena.cryptid.details,
+                phenomena.psychic.details,
+                phenomena.temporal.details
+            ),
+            sections: [].concat(
+                phenomena.ufo.sections,
+                phenomena.cryptid.sections,
+                phenomena.psychic.sections,
+                phenomena.temporal.sections
+            )
+        };
+        
+        // SCP-style rare entries
+        const rareEntries = [
+            "WARNING: FILE RETRIEVAL ERROR. CONTAINMENT PROTOCOLS FOR SCP-████ MAY HAVE BEEN COMPROMISED. MOBILE TASK FORCE DISPATCHED TO YOUR LOCATION. DO NOT ATTEMPT TO LEAVE OR COMMUNICATE WITH OUTSIDE PARTIES.",
+            
+            "COGNITOHAZARD DETECTED. YOUR ACCESS TO THIS INFORMATION HAS TRIGGERED AUTOMATIC MEMETIC COUNTERMEASURES. REMAIN AT YOUR TERMINAL. FIELD AGENTS HAVE BEEN DISPATCHED WITH CLASS-A AMNESTICS.",
+            
+            "NOTICE: YOUR REPEATED QUERIES REGARDING [REDACTED] HAVE BEEN FLAGGED BY AUTOMATED SECURITY SYSTEMS. THIS SYSTEM HAS INITIATED FACIAL RECOGNITION AND GEO-TRACKING PROTOCOLS. YOUR IDENTITY HAS BEEN LOGGED.",
+            
+            "ALERT: THIS TERMINAL HAS DETECTED EXPOSURE TO INFORMATION MATCHING PATTERN KILOTANGO. PROTOCOL MARIANA NOW IN EFFECT. YOU HAVE BEEN CLASSIFIED AS A POTENTIAL VECTOR. QUARANTINE TEAMS EN ROUTE.",
+            
+            "DATABASE ANOMALY: THE ITEM YOU HAVE REQUESTED APPEARS TO REFERENCE EVENTS THAT HAVE NOT YET OCCURRED. YOUR TEMPORAL COORDINATES HAVE BEEN LOGGED. PRECOGNITIVE DIVISION NOTIFIED.",
+            
+            "SECURITY ALERT: YOUR DNA SIGNATURE MATCHES SAMPLES RECOVERED FROM INCIDENT SITE [REDACTED] DATED 1978, DESPITE NO RECORD OF YOUR PRESENCE AT THIS LOCATION. EXPLAIN DISCREPANCY IMMEDIATELY."
+        ];
+        
+        // Random notification messages
+        const notificationMessages = [
+            "URGENT: Monitoring stations in sector 7 report anomalous readings. Field teams dispatched.",
+            "ALERT: Level 4 containment breach at [REDACTED] facility. All personnel advised to initiate Protocol Omega-9.",
+            "NOTICE: Orbital surveillance has detected unusual activity at previously dormant site. Observation teams monitoring.",
+            "UPDATE: Three agents lost contact during routine investigation of temporal disturbance. Recovery team mobilized.",
+            "WARNING: Unusual psychic sensitivity detected in civilian population near test site. Memory suppression teams on standby.",
+            "TRANSMISSION: Deep space monitoring station reports signal of artificial origin. Cryptography division attempting decoding.",
+            "ADVISORY: Weather control experiment resulted in unexpected atmospheric phenomena. Cover story initiated.",
+            "PROTOCOL ACTIVE: Reality anchor deployment authorized in response to dimensional thinning in sector 12-B.",
+            "INCIDENT REPORT: Unauthorized access attempt at DARKWATER facility. Perpetrators displayed non-standard biological signatures.",
+            "OBSERVATION: Statistical anomalies detected in global communication patterns. ECHELON system flagging possible memetic vector."
+        ];
+        
+        // Count how many times the button has been clicked
+        let clickCount = 0;
+        
+        // Function to make an element flicker
+        function applyGlitchEffect() {
+            interference.classList.add('active');
+            
+            setTimeout(() => {
+                interference.classList.remove('active');
+            }, 200);
+            
+            setTimeout(() => {
+                interference.classList.add('active');
+            }, 350);
+            
+            setTimeout(() => {
+                interference.classList.remove('active');
+            }, 400);
+            
+            setTimeout(() => {
+                interference.classList.add('active');
+            }, 600);
+            
+            setTimeout(() => {
+                interference.classList.remove('active');
+            }, 800);
+        }
+        
+        // Function to show a random notification
+        function showRandomNotification() {
+            // Only show notification if one is not already displayed
+            if (!notification.classList.contains('show')) {
+                notificationContent.textContent = notificationMessages[Math.floor(Math.random() * notificationMessages.length)];
+                notification.classList.add('show');
+                
+                // Hide notification after some time
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 10000);
+            }
+        }
+        
+        // Set up periodic notifications
+        function setupNotifications() {
+            // Initial delay
+            setTimeout(() => {
+                showRandomNotification();
+                
+                // Then setup interval with random timing between 20-60 seconds
+                setInterval(() => {
+                    const randomDelay = Math.floor(Math.random() * 40000) + 20000;
+                    setTimeout(showRandomNotification, randomDelay);
+                }, 60000);
+            }, Math.floor(Math.random() * 15000) + 5000);
+        }
+        
+        // Close notification on click
+        notificationClose.addEventListener('click', () => {
+            notification.classList.remove('show');
+        });
+        
+        // Create a function to make a redacted text element
+        function createRedactedText(text) {
+            const redactedSpan = document.createElement('span');
+            redactedSpan.classList.add('redacted');
+            redactedSpan.textContent = text;
+            redactedSpan.addEventListener('click', function() {
+                // 30% chance to reveal text
+                if (Math.random() < 0.3 && !this.classList.contains('redacted-revealed')) {
+                    this.classList.add('redacted-revealed');
+                    applyGlitchEffect();
+                }
+            });
+            return redactedSpan.outerHTML;
+        }
+        
+        // Generate a random message
+        function generateReport() {
+            clickCount++;
+            
+            // 10% chance of getting an SCP-style rare entry after at least 2 clicks
+            if (clickCount > 2 && Math.random() < 0.1) {
+                return rareEntries[Math.floor(Math.random() * rareEntries.length)];
+            }
+            
+            // Get data for current category
+            const categoryData = phenomena[currentCategory];
+            
+            const timeframe = categoryData.timeframes[Math.floor(Math.random() * categoryData.timeframes.length)];
+            const entity = categoryData.entities[Math.floor(Math.random() * categoryData.entities.length)];
+            const location = categoryData.locations[Math.floor(Math.random() * categoryData.locations.length)];
+            const detail = categoryData.details[Math.floor(Math.random() * categoryData.details.length)];
+            
+            // Choose 1-2 additional sections
+            const numSections = Math.random() < 0.5 ? 1 : 2;
+            const sections = [];
+            const usedIndices = new Set();
+            
+            for (let i = 0; i < numSections; i++) {
+                let sectionIndex;
+                do {
+                    sectionIndex = Math.floor(Math.random() * categoryData.sections.length);
+                } while (usedIndices.has(sectionIndex));
+                
+                usedIndices.add(sectionIndex);
+                sections.push(categoryData.sections[sectionIndex]);
+            }
+            
+            // Create a partially redacted report
+            let report = `<p><strong>INCIDENT SUMMARY:</strong><br>${timeframe}, ${entity} were detected near ${location}. `;
+            
+            // Add some redactions
+            const words = "Initial assessments indicate possible connection to previous incidents involving non-terrestrial intelligence.".split(' ');
+            report += words.map(word => Math.random() < 0.2 ? createRedactedText(word) : word).join(' ');
+            
+            report += ` ${detail}</p>`;
+            
+            // Add a follow-up paragraph with more details
+            report += `<p><strong>CURRENT STATUS:</strong><br>Follow-up investigation is ${Math.random() < 0.5 ? 'ongoing' : createRedactedText('classified')}. Personnel with UMBRA clearance may access supplementary documentation through secure channels. ${Math.random() < 0.3 ? 'Witnesses have been administered Class-' + ['A', 'B', 'C', 'D'][Math.floor(Math.random() * 4)] + ' amnestics.' : 'Maintain surveillance on all known witnesses.'}</p>`;
+            
+            // Add sections
+            sections.forEach(section => {
+                const sectionParts = section.split(':');
+                report += `<p><strong>${sectionParts[0]}:</strong>${sectionParts[1]}</p>`;
+            });
+            
+            return report;
+        }
+        
+        // Generate random date in past
+        function randomPastDate() {
+            const year = Math.floor(Math.random() * 75) + 1947; // 1947-2022
+            const month = Math.floor(Math.random() * 12) + 1;
+            const day = Math.floor(Math.random() * 28) + 1; // Simplified to avoid invalid dates
+            
+            return `DATE: ${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}/${year}`;
+        }
+        
+        // Animation for accessing the files
+        function accessFiles() {
+            // Disable button during animation
+            accessBtn.disabled = true;
+            report.classList.remove('show');
+            
+            // Show loading message
+            loading.style.display = 'block';
+            
+            // Flicker effect on the page
+            applyGlitchEffect();
+            
+            setTimeout(() => {
+                body.style.backgroundColor = '#0c141a';
+            }, 300);
+            
+            setTimeout(() => {
+                body.style.backgroundColor = '#0a0a14';
+            }, 400);
+            
+            setTimeout(() => {
+                body.style.backgroundColor = '#081018';
+            }, 600);
+            
+            setTimeout(() => {
+                body.style.backgroundColor = '#0a0a14';
+            }, 700);
+            
+            // Hide loading and show report after delay
+            setTimeout(() => {
+                loading.style.display = 'none';
+                
+                // Generate and display report
+                const reportText = generateReport();
+                reportContent.innerHTML = reportText;
+                
+                // Generate a random file number and date
+                const caseNumber = 'CASE FILE: #' + Math.floor(Math.random() * 99999).toString().padStart(5, '0');
+                fileNumber.textContent = caseNumber;
+                dateField.textContent = randomPastDate();
+                
+                // Show the report
+                report.classList.add('show');
+                
+                // Re-enable button
+                accessBtn.disabled = false;
+                
+                // Add glitch effect to text for rare entries
+                if (reportText.includes("WARNING:") || reportText.includes("ALERT:") || reportText.includes("NOTICE:")) {
+                    reportContent.setAttribute('data-text', reportText);
+                    reportContent.classList.add('glitch');
+                    report.style.backgroundColor = '#f0e0e0';
+                    
+                    setTimeout(() => {
+                        reportContent.classList.remove('glitch');
+                        report.style.backgroundColor = '#f0f0f0';
+                    }, 5000);
+                } else {
+                    reportContent.classList.remove('glitch');
+                    report.style.backgroundColor = '#f0f0f0';
+                }
+                
+            }, 1800);
+        }
+        
+        // Set current category
+        function setCategory(category) {
+            currentCategory = category;
+            categoryButtons.forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+        
+        // Process login form submission
+        function processLogin() {
+            const userIdValue = userId.value.trim();
+            const passwordValue = password.value;
+            
+            if (userIdValue.length < 4 || passwordValue.length < 6) {
+                loginAttempts--;
+                authError.textContent = `Invalid User ID and/or password. Remaining attempts: ${loginAttempts}`;
+                
+                if (loginAttempts <= 0) {
+                    loginBtn.disabled = true;
+                    userId.disabled = true;
+                    password.disabled = true;
+                    authError.textContent = "ACCESS DENIED. System locked.";
+                }
+                
+                applyGlitchEffect();
+                return;
+            }
+            
+            // Hide form and show biometric scan
+            document.querySelector('.auth-form').style.display = 'none';
+            authError.textContent = '';
+            biometricScan.style.display = 'flex';
+            
+            // Start with fingerprint scan
+            fingerprintScan.style.opacity = '1';
+            scanStatus.textContent = "FINGERPRINT SCAN IN PROGRESS...";
+            
+            setTimeout(() => {
+                scanStatus.textContent = "FINGERPRINT VERIFIED";
+                
+                // Switch to retina scan
+                setTimeout(() => {
+                    fingerprintScan.style.opacity = '0';
+                    retinaScan.style.opacity = '1';
+                    scanStatus.textContent = "RETINA SCAN IN PROGRESS...";
+                    
+                    setTimeout(() => {
+                        scanStatus.textContent = "RETINA PATTERN MATCHED";
+                        
+                        // Switch to face scan if camera is available
+                        setTimeout(() => {
+                            retinaScan.style.opacity = '0';
+                            faceScan.style.opacity = '1';
+                            
+                            // Try to access camera
+                            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                                navigator.mediaDevices.getUserMedia({ video: true })
+                                    .then(stream => {
+                                        faceScanCamera.srcObject = stream;
+                                        faceScanCamera.style.display = 'block';
+                                        
+                                        // Add face marker points
+                                        facePoints.forEach(point => {
+                                            const marker = document.createElement('div');
+                                            marker.classList.add('face-marker');
+                                            marker.style.left = `${point.x}px`;
+                                            marker.style.top = `${point.y}px`;
+                                            faceMarkers.appendChild(marker);
+                                        });
+                                        
+                                        scanStatus.textContent = "FACIAL RECOGNITION IN PROGRESS...";
+                                        
+                                        // Complete biometric authentication
+                                        setTimeout(() => {
+                                            scanStatus.textContent = "IDENTITY CONFIRMED";
+                                            
+                                            // Stop camera stream
+                                            stream.getTracks().forEach(track => track.stop());
+                                            
+                                            // Complete login and show main interface
+                                            setTimeout(() => {
+                                                authScreen.classList.add('hidden');
+                                                setupNotifications();
+                                            }, 1500);
+                                        }, 3000);
+                                    })
+                                    .catch(error => {
+                                        // If camera access denied, continue without it
+                                        scanStatus.textContent = "FACIAL SCAN BYPASSED";
+                                        setTimeout(() => {
+                                            authScreen.classList.add('hidden');
+                                            setupNotifications();
+                                        }, 1500);
+                                    });
+                            } else {
+                                // If camera not available, continue without it
+                                scanStatus.textContent = "FACIAL SCAN UNAVAILABLE - BYPASSED";
+                                setTimeout(() => {
+                                    authScreen.classList.add('hidden');
+                                    setupNotifications();
+                                }, 1500);
+                            }
+                        }, 1500);
+                    }, 2000);
+                }, 1500);
+            }, 2000);
+        }
+        
+        // Event listener for login button
+        loginBtn.addEventListener('click', processLogin);
+        
+        // Event listeners for login form enter key
+        password.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                processLogin();
+            }
+        });
+        
+        // Event listener for button click
+        accessBtn.addEventListener('click', accessFiles);
+        
+        // Event listeners for category buttons
+        categoryButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                setCategory(btn.dataset.category);
+            });
+        });
+    </script>
+</body>
+</html>
