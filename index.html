@@ -41,7 +41,7 @@
         }
         
         header {
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
         
         h1 {
@@ -56,10 +56,31 @@
         .subtitle {
             font-style: italic;
             color: #7af7ee;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-size: 0.9rem;
+        }
+        
+        /* Status bar styles */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 15px;
+            background-color: rgba(16, 26, 35, 0.9);
+            border: 1px solid #2a6277;
+            border-radius: 3px;
+            margin-top: 5px;
+            font-size: 0.8rem;
+        }
+        
+        .status-user {
+            color: #00f7ff;
+        }
+        
+        .status-time {
+            color: #7af7ee;
         }
         
         .terminal-interface {
@@ -81,6 +102,45 @@
             right: 0;
             height: 25px;
             background: linear-gradient(to bottom, rgba(0, 247, 255, 0.05), transparent);
+        }
+
+        .nav-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(42, 98, 119, 0.3);
+        }
+
+        .nav-tab {
+            background-color: transparent;
+            color: #7af7ee;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-tab:hover {
+            background-color: rgba(19, 72, 87, 0.3);
+            color: #00f7ff;
+        }
+
+        .nav-tab.active {
+            color: #00f7ff;
+            border-bottom: 2px solid #00f7ff;
+            text-shadow: 0 0 5px rgba(0, 247, 255, 0.5);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
         
         .access-btn {
@@ -130,6 +190,21 @@
             flex-direction: column;
             background-image: linear-gradient(#f0f0f0 7px, #e0e0e0 1px);
             background-size: 100% 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .report::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJhIiB4PSIwIiB5PSIwIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlQ29sb3JNYXRyaXggdHlwZT0ic2F0dXJhdGUiIHZhbHVlcz0iMCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIiBmaWx0ZXI9InVybCgjYSkiIG9wYWNpdHk9Ii4wMSIvPjwvc3ZnPg==');
+            pointer-events: none;
+            opacity: 0.4;
+            z-index: 0;
         }
         
         .report.show {
@@ -358,7 +433,7 @@
             }
         }
 
-        /* New styles for authentication screen */
+        /* Authentication screen styles */
         .auth-screen {
             display: flex;
             flex-direction: column;
@@ -707,6 +782,460 @@
             color: #00f7ff;
             box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
         }
+
+        /* Photocopy button */
+        .photocopy-btn {
+            background-color: rgba(10, 50, 61, 0.7);
+            border: 1px solid #1a7385;
+            color: #7af7ee;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 5;
+            display: none;
+        }
+
+        .photocopy-btn:hover {
+            background-color: #134857;
+            color: #00f7ff;
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+        }
+
+        .photocopy-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .photocopy-content {
+            background-color: #eee;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+        }
+
+        .photocopy-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #000;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .photocopy-image {
+            display: block;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .photocopy-instructions {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #333;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Document watermarks and stamps */
+        .document-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 4rem;
+            color: rgba(200, 0, 0, 0.08);
+            font-weight: bold;
+            font-family: 'Arial', sans-serif;
+            white-space: nowrap;
+            z-index: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .document-stamp {
+            position: absolute;
+            bottom: 70px;
+            right: 30px;
+            width: 100px;
+            height: 100px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.7;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .coffee-stain {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDUiIGZpbGw9InJnYmEoMTM5LCA2OSwgMTksIDAuMTIpIi8+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iMzUiIGZpbGw9InJnYmEoMTM5LCA2OSwgMTksIDAuMTgpIi8+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iMjUiIGZpbGw9InJnYmEoMTM5LCA2OSwgMTksIDAuMjIpIi8+PC9zdmc+');
+            background-size: contain;
+            z-index: 1;
+            opacity: 0.5;
+            pointer-events: none;
+            transform: rotate(15deg);
+        }
+
+        .paper-fold {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, transparent 48%, rgba(0, 0, 0, 0.05) 49%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.05) 51%, transparent 52%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Personnel Database styles */
+        .agent-search-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .agent-search-form {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            max-width: 400px;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .agent-search-form.visible {
+            display: flex;
+        }
+
+        .agent-search-row {
+            display: flex;
+            width: 100%;
+            gap: 10px;
+        }
+
+        .agent-search-input {
+            background-color: rgba(10, 20, 30, 0.7);
+            border: 1px solid #2a6277;
+            padding: 10px;
+            flex: 1;
+            color: #00f7ff;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+        }
+
+        .agent-search-btn {
+            background-color: rgba(10, 50, 61, 0.7);
+            border: 1px solid #1a7385;
+            color: #7af7ee;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .agent-search-btn:hover {
+            background-color: #134857;
+            color: #00f7ff;
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+        }
+
+        .agent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        .agent-card {
+            background-color: rgba(16, 26, 35, 0.9);
+            border: 1px solid #2a6277;
+            padding: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 247, 255, 0.2);
+        }
+
+        .agent-name {
+            font-weight: bold;
+            color: #00f7ff;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .agent-id {
+            font-size: 0.8rem;
+            color: #7af7ee;
+            margin-bottom: 10px;
+        }
+
+        .agent-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            margin-top: 10px;
+        }
+
+        .status-active {
+            background-color: rgba(39, 174, 96, 0.3);
+            border: 1px solid rgba(39, 174, 96, 0.5);
+            color: #2ecc71;
+        }
+
+        .status-mia {
+            background-color: rgba(241, 196, 15, 0.3);
+            border: 1px solid rgba(241, 196, 15, 0.5);
+            color: #f1c40f;
+        }
+
+        .status-deceased {
+            background-color: rgba(231, 76, 60, 0.3);
+            border: 1px solid rgba(231, 76, 60, 0.5);
+            color: #e74c3c;
+        }
+
+        .agent-detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .agent-detail-container {
+            background-color: rgba(16, 26, 35, 0.95);
+            border: 1px solid #2a6277;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+        }
+
+        .agent-detail-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #7af7ee;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .agent-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(42, 98, 119, 0.5);
+        }
+
+        .agent-detail-info {
+            flex: 1;
+        }
+
+        .agent-detail-name {
+            font-size: 1.5rem;
+            color: #00f7ff;
+            margin-bottom: 5px;
+        }
+
+        .agent-detail-id {
+            font-size: 0.9rem;
+            color: #7af7ee;
+            margin-bottom: 5px;
+        }
+
+        .agent-detail-department {
+            font-size: 0.9rem;
+            font-style: italic;
+            color: #7af7ee;
+        }
+
+        .agent-detail-status-large {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            margin-left: 20px;
+        }
+
+        .agent-detail-content {
+            line-height: 1.6;
+        }
+
+        .agent-detail-section {
+            margin-bottom: 20px;
+        }
+
+        .agent-detail-section-title {
+            font-size: 1.1rem;
+            color: #00f7ff;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(42, 98, 119, 0.3);
+            padding-bottom: 3px;
+        }
+
+        .agent-add-btn {
+            background-color: rgba(10, 50, 61, 0.7);
+            border: 1px solid #1a7385;
+            color: #7af7ee;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .agent-add-btn:hover {
+            background-color: #134857;
+            color: #00f7ff;
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+        }
+
+        .agent-photocopy-btn {
+            background-color: rgba(10, 50, 61, 0.7);
+            border: 1px solid #1a7385;
+            color: #7af7ee;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            display: block;
+        }
+
+        .agent-photocopy-btn:hover {
+            background-color: #134857;
+            color: #00f7ff;
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+        }
+
+        .agent-add-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .agent-add-container {
+            background-color: rgba(16, 26, 35, 0.95);
+            border: 1px solid #2a6277;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 20px;
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.3);
+        }
+
+        .agent-add-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #7af7ee;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .agent-add-title {
+            font-size: 1.3rem;
+            color: #00f7ff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .agent-add-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            color: #7af7ee;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            background-color: rgba(10, 20, 30, 0.7);
+            border: 1px solid #2a6277;
+            padding: 10px;
+            color: #00f7ff;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-submit {
+            background-color: rgba(10, 50, 61, 0.7);
+            border: 1px solid #1a7385;
+            color: #7af7ee;
+            padding: 10px;
+            font-size: 1rem;
+            font-family: 'Courier New', Courier, monospace;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .form-submit:hover {
+            background-color: #134857;
+            color: #00f7ff;
+            box-shadow: 0 0 10px rgba(0, 247, 255, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -755,10 +1284,103 @@
         </div>
     </div>
     
+    <!-- Photocopy modal -->
+    <div class="photocopy-modal" id="photocopyModal">
+        <div class="photocopy-content">
+            <div class="photocopy-close" id="photocopyClose">×</div>
+            <div id="photocopyImageContainer">
+                <img id="photocopyImage" class="photocopy-image">
+            </div>
+            <div class="photocopy-instructions">
+                Right-click on image and select "Save image as..." to download
+            </div>
+        </div>
+    </div>
+    
+    <!-- Agent detail modal -->
+    <div class="agent-detail-modal" id="agentDetailModal">
+        <div class="agent-detail-container" id="agentDetailContainer">
+            <div class="agent-detail-close" id="agentDetailClose">×</div>
+            <div class="agent-detail-header">
+                <div class="agent-detail-info">
+                    <div class="agent-detail-name" id="agentDetailName">Agent Name</div>
+                    <div class="agent-detail-id" id="agentDetailId">ID: 000000</div>
+                    <div class="agent-detail-department" id="agentDetailDepartment">Department</div>
+                </div>
+                <div class="agent-detail-status-large status-active" id="agentDetailStatus">Active</div>
+            </div>
+            <div class="agent-detail-content">
+                <div class="agent-detail-section">
+                    <div class="agent-detail-section-title">Biographical Data</div>
+                    <div id="agentDetailBio"></div>
+                </div>
+                <div class="agent-detail-section">
+                    <div class="agent-detail-section-title">Background</div>
+                    <div id="agentDetailBackground"></div>
+                </div>
+                <div class="agent-detail-section">
+                    <div class="agent-detail-section-title">Last Known Activity</div>
+                    <div id="agentDetailLastActivity"></div>
+                </div>
+            </div>
+            <button class="agent-photocopy-btn" id="agentPhotocopyBtn">PHOTOCOPY PERSONNEL FILE</button>
+        </div>
+    </div>
+    
+    <!-- Agent add modal -->
+    <div class="agent-add-modal" id="agentAddModal">
+        <div class="agent-add-container">
+            <div class="agent-add-close" id="agentAddClose">×</div>
+            <div class="agent-add-title">Add New Agent to Database</div>
+            <form class="agent-add-form" id="agentAddForm">
+                <div class="form-group">
+                    <label for="addAgentName">Agent Name</label>
+                    <input type="text" id="addAgentName" required placeholder="First and Last Name">
+                </div>
+                <div class="form-group">
+                    <label for="addAgentDepartment">Department/Division</label>
+                    <select id="addAgentDepartment" required>
+                        <option value="Field Operations">Field Operations</option>
+                        <option value="Research & Development">Research & Development</option>
+                        <option value="Intelligence Analysis">Intelligence Analysis</option>
+                        <option value="Containment">Containment</option>
+                        <option value="Surveillance">Surveillance</option>
+                        <option value="Special Projects">Special Projects</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="addAgentStatus">Status</label>
+                    <select id="addAgentStatus" required>
+                        <option value="active">Active</option>
+                        <option value="mia">Missing in Action</option>
+                        <option value="deceased">Deceased</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="addAgentBio">Biographical Data</label>
+                    <textarea id="addAgentBio" required placeholder="Enter agent biographical information..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="addAgentBackground">Background</label>
+                    <textarea id="addAgentBackground" required placeholder="Enter agent background information..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="addAgentLastActivity">Last Known Activity</label>
+                    <textarea id="addAgentLastActivity" required placeholder="Enter agent's last known activity..."></textarea>
+                </div>
+                <button type="submit" class="form-submit">Add Agent to Database</button>
+            </form>
+        </div>
+    </div>
+    
     <div class="container">
         <header>
             <h1>UNEXPLAINED PHENOMENA ARCHIVES</h1>
             <div class="subtitle">Project Blue Book - Majestic-12 - Delta Green</div>
+            <div class="status-bar">
+                <div class="status-user" id="statusUser">Welcome, Guest</div>
+                <div class="status-time" id="statusTime">Login time: 00:00:00</div>
+            </div>
         </header>
         
         <div class="terminal-interface">
@@ -768,20 +1390,52 @@
             <p>WARNING: UNAUTHORIZED ACCESS IS PUNISHABLE UNDER NATIONAL SECURITY ACT</p>
             <p>&nbsp;</p>
             
-            <div class="category-selector" id="categorySelector">
-                <button class="category-btn active" data-category="all">All Files</button>
-                <button class="category-btn" data-category="ufo">UFO Sightings</button>
-                <button class="category-btn" data-category="cryptid">Cryptid Encounters</button>
-                <button class="category-btn" data-category="psychic">Psychic Phenomena</button>
-                <button class="category-btn" data-category="temporal">Temporal Anomalies</button>
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="caseFiles">CASE FILES</button>
+                <button class="nav-tab" data-tab="personnel">PERSONNEL</button>
             </div>
             
-            <button class="access-btn">RETRIEVE FILE</button>
-            <div class="loading">Decrypting data...</div>
+            <div class="tab-content active" id="caseFiles">
+                <div class="category-selector" id="categorySelector">
+                    <button class="category-btn active" data-category="all">All Files</button>
+                    <button class="category-btn" data-category="ufo">UFO Sightings</button>
+                    <button class="category-btn" data-category="cryptid">Cryptid Encounters</button>
+                    <button class="category-btn" data-category="psychic">Psychic Phenomena</button>
+                    <button class="category-btn" data-category="temporal">Temporal Anomalies</button>
+                </div>
+                
+                <button class="access-btn">RETRIEVE FILE</button>
+                <div class="loading">Decrypting data...</div>
+            </div>
+            
+            <div class="tab-content" id="personnel">
+                <div class="agent-search-container">
+                    <button class="agent-search-btn" id="openSearchBtn">SEARCH PERSONNEL DATABASE</button>
+                    
+                    <form class="agent-search-form" id="agentSearchForm">
+                        <div class="agent-search-row">
+                            <input type="text" class="agent-search-input" id="firstNameInput" placeholder="FIRST NAME" required>
+                            <input type="text" class="agent-search-input" id="lastNameInput" placeholder="LAST NAME" required>
+                        </div>
+                        <button type="submit" class="agent-search-btn">SEARCH</button>
+                    </form>
+                </div>
+                
+                <div class="agent-grid" id="agentGrid">
+                    <!-- Agent cards will be generated here -->
+                </div>
+                
+                <button class="agent-add-btn" id="agentAddBtn">ADD NEW AGENT</button>
+            </div>
         </div>
         
         <div class="report">
             <div class="classification">TOP SECRET</div>
+            <div class="document-watermark">TOP SECRET</div>
+            <div class="document-stamp"></div>
+            <div class="coffee-stain"></div>
+            <div class="paper-fold"></div>
+            
             <div class="report-header">
                 <div class="file-number">CASE FILE: #000</div>
                 <div class="date">DATE: 00/00/0000</div>
@@ -790,6 +1444,7 @@
             <div class="report-footer">
                 END OF REPORT - DISTRIBUTION RESTRICTED
             </div>
+            <button class="photocopy-btn" id="photocopyBtn">PHOTOCOPY DOCUMENT</button>
         </div>
         
         <div class="footer">
@@ -817,6 +1472,27 @@
         const notificationClose = document.getElementById('notificationClose');
         const categoryButtons = document.querySelectorAll('.category-btn');
         const categorySelector = document.getElementById('categorySelector');
+        const tabs = document.querySelectorAll('.nav-tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const agentGrid = document.getElementById('agentGrid');
+        const agentDetailModal = document.getElementById('agentDetailModal');
+        const agentDetailClose = document.getElementById('agentDetailClose');
+        const agentDetailContainer = document.getElementById('agentDetailContainer');
+        const agentAddModal = document.getElementById('agentAddModal');
+        const agentAddBtn = document.getElementById('agentAddBtn');
+        const agentAddClose = document.getElementById('agentAddClose');
+        const agentAddForm = document.getElementById('agentAddForm');
+        const photocopyBtn = document.getElementById('photocopyBtn');
+        const photocopyModal = document.getElementById('photocopyModal');
+        const photocopyClose = document.getElementById('photocopyClose');
+        const photocopyImage = document.getElementById('photocopyImage');
+        const openSearchBtn = document.getElementById('openSearchBtn');
+        const agentSearchForm = document.getElementById('agentSearchForm');
+        const firstNameInput = document.getElementById('firstNameInput');
+        const lastNameInput = document.getElementById('lastNameInput');
+        const agentPhotocopyBtn = document.getElementById('agentPhotocopyBtn');
+        const statusUser = document.getElementById('statusUser');
+        const statusTime = document.getElementById('statusTime');
         
         // Authentication elements
         const authScreen = document.querySelector('.auth-screen');
@@ -831,6 +1507,11 @@
         const faceScanCamera = document.getElementById('faceScanCamera');
         const scanStatus = document.getElementById('scanStatus');
         const faceMarkers = document.getElementById('faceMarkers');
+        
+        // Login timer variables
+        let loginTime = null;
+        let loginTimer = null;
+        let userIdValue = '';
         
         // Current category
         let currentCategory = 'all';
@@ -1046,6 +1727,262 @@
             )
         };
         
+        // Agent database data
+        const agentPrefixes = [
+            "Agent", "Special Agent", "Operative", "Field Agent", "Specialist", 
+            "Investigator", "Director", "Deputy Director", "Analyst", "Commander"
+        ];
+        
+        const firstNames = [
+            "James", "William", "Robert", "David", "Michael", "Daniel", "Thomas", "John", "Richard", "Charles",
+            "Mary", "Patricia", "Jennifer", "Elizabeth", "Linda", "Barbara", "Susan", "Jessica", "Sarah", "Karen",
+            "Alex", "Morgan", "Jordan", "Casey", "Taylor", "Riley", "Quinn", "Avery", "Skyler", "Parker"
+        ];
+        
+        const lastNames = [
+            "Smith", "Johnson", "Williams", "Brown", "Jones", "Miller", "Davis", "Garcia", "Rodriguez", "Wilson",
+            "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin", "Lee", "Thompson", "White", "Harris",
+            "Lewis", "Walker", "Hall", "Allen", "Young", "King", "Wright", "Scott", "Green", "Baker"
+        ];
+        
+        const departments = [
+            "Field Operations", "Research & Development", "Intelligence Analysis", 
+            "Containment", "Surveillance", "Special Projects"
+        ];
+        
+        const bioTemplates = [
+            "Born {YEAR} in {LOCATION}. {HEIGHT}, {WEIGHT}. {EDUCATION}. {CLEARANCE} clearance level granted on {DATE}.",
+            "{CLEARANCE} operative with {YEARS} years of service. Born {YEAR}, recruited {RECRUITED_YEAR}. {EDUCATION}. Physical profile: {HEIGHT}, {WEIGHT}.",
+            "Recruited from {AGENCY} in {RECRUITED_YEAR}. {HEIGHT}, {WEIGHT}. {EDUCATION}. Psychological evaluation: {PSYCH}. Clearance: {CLEARANCE}.",
+            "{YEARS} years active service. Physical specifications: {HEIGHT}, {WEIGHT}. Born {LOCATION}, {YEAR}. {EDUCATION}. Clearance level: {CLEARANCE}."
+        ];
+        
+        const backgroundTemplates = [
+            "Specialized in {SPECIALTY1} and {SPECIALTY2}. Notable field operations include {OPERATION1} and {OPERATION2}. Received commendation for {COMMENDATION}. {INCIDENTS}",
+            "Former {PREVIOUS_ROLE} before recruitment. Demonstrated exceptional aptitude in {SPECIALTY1}. Lead investigator on {OPERATION1}. {INCIDENTS}",
+            "Selected for {SPECIALTY1} training following performance during {OPERATION1}. Expertise in {SPECIALTY2}. {INCIDENTS} Psychological profile indicates high stress tolerance and analytical thinking.",
+            "Military background with {MILITARY} before recruitment. Specialized training in {SPECIALTY1}. Participated in {OPERATION1} and {OPERATION2}. {INCIDENTS}"
+        ];
+        
+        const lastSeenTemplates = [
+            "Last field report filed {DATE} from {LOCATION}. {STATUS_DETAIL}",
+            "Last contact on {DATE} during {OPERATION}. {STATUS_DETAIL}",
+            "Failed to report at scheduled extraction point on {DATE} following {OPERATION}. {STATUS_DETAIL}",
+            "{STATUS_DETAIL} Last confirmed sighting {DATE} near {LOCATION}.",
+            "Currently assigned to {OPERATION} as of {DATE}. {STATUS_DETAIL}",
+            "Reassigned to {DEPARTMENT} on {DATE}. {STATUS_DETAIL}"
+        ];
+        
+        const activeStatusDetails = [
+            "Currently assigned to ongoing investigation.",
+            "Regular status reports being received.",
+            "All protocols being observed.",
+            "Embedded with surveillance team.",
+            "Operating under deep cover assignment.",
+            "Temporarily reassigned to advisory role."
+        ];
+        
+        const miaStatusDetails = [
+            "Search teams dispatched to last known coordinates.",
+            "Personal effects found but no sign of subject.",
+            "Tracking beacon ceased transmission unexpectedly.",
+            "Possible defection being investigated.",
+            "Surveillance footage shows anomalous temporal distortion at time of disappearance.",
+            "Investigation suggests possible non-voluntary disappearance."
+        ];
+        
+        const deceasedStatusDetails = [
+            "Body not recovered due to hazardous conditions.",
+            "Death occurred under circumstances requiring Level 5 clearance to access.",
+            "Autopsy revealed anomalous physiological changes.",
+            "Cause of death officially recorded as [REDACTED].",
+            "Remains quarantined pending further analysis.",
+            "Memorial service restricted to personnel with UMBRA clearance."
+        ];
+        
+        const locations = [
+            "Washington D.C.", "New York", "Chicago", "Los Angeles", "Houston", "Seattle", 
+            "Denver", "Boston", "Atlanta", "Phoenix", "Portland", "Detroit", "San Diego",
+            "London", "Berlin", "Moscow", "Tokyo", "Beijing", "Sydney", "Toronto", "Cairo"
+        ];
+        
+        const specialties = [
+            "cryptid containment", "anomalous material analysis", "witness interrogation", 
+            "paranormal phenomena", "extraterrestrial communication", "temporal anomalies",
+            "psychic defense", "memetic hazard management", "reality stabilization", 
+            "dimensional analysis", "paraphysical entities", "non-euclidean geometry"
+        ];
+        
+        const operations = [
+            "Operation BLUE BOOK", "Project INDIGO", "Case SILENT THUNDER", 
+            "Operation ROLLING MIST", "Project OBSIDIAN", "Operation BLACKOUT",
+            "Project LOOKING GLASS", "Case BROKEN ARROW", "Operation PHOENIX LIGHT",
+            "Project STARGATE", "Operation DARK WATER", "Case CRIMSON SKY"
+        ];
+        
+        const agencies = [
+            "FBI", "CIA", "NSA", "DIA", "NRO", "DARPA", 
+            "CDC", "DOE", "MI6", "Mossad", "INTERPOL", "KGB"
+        ];
+        
+        const military = [
+            "Navy SEALS", "Army Special Forces", "Air Force Special Operations", 
+            "Marine Force Recon", "Army Rangers", "Delta Force",
+            "Coast Guard Tactical Law Enforcement", "Military Intelligence"
+        ];
+        
+        const incidents = [
+            "Exposed to anomalous energy during [REDACTED] incident.", 
+            "Survived encounter with Class-4 entity.",
+            "Temporarily affected by reality-altering phenomena.", 
+            "Demonstrated unusual resistance to memetic hazards.",
+            "Required Class-B amnestics following [REDACTED] exposure.", 
+            "Recovered fully from dimensional sickness after [REDACTED] incident."
+        ];
+        
+        const education = [
+            "Ph.D. in Theoretical Physics", 
+            "Masters in Cryptozoological Studies", 
+            "Doctorate in Parapyschology",
+            "Dual degrees in Anthropology and Linguistics", 
+            "Advanced training in Forensic Science", 
+            "Special forces tactical training",
+            "Masters in Xenobiology", 
+            "Ph.D. in Non-conventional Energy Systems",
+            "Advanced degrees in Quantum Mechanics"
+        ];
+        
+        const clearanceLevels = [
+            "LEVEL 3", "LEVEL 4", "LEVEL 5", "UMBRA", "COSMIC", "ULTRAVIOLET", "OMEGA"
+        ];
+        
+        const psychProfiles = [
+            "highly adaptive", "exceptional stress tolerance", "heightened pattern recognition",
+            "unusual intuitive capabilities", "analytical with strategic mindset", "high empathic sensitivity"
+        ];
+        
+        // Generate agents
+        let agents = [];
+        
+        // Initialize with 20 random agents
+        function generateRandomAgents(count = 20) {
+            const newAgents = [];
+            
+            for (let i = 0; i < count; i++) {
+                const firstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+                const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+                const prefix = agentPrefixes[Math.floor(Math.random() * agentPrefixes.length)];
+                const department = departments[Math.floor(Math.random() * departments.length)];
+                
+                // Generate agent ID
+                const agentId = Math.floor(Math.random() * 900000) + 100000;
+                
+                // Generate status (70% active, 20% MIA, 10% deceased)
+                let status = 'active';
+                const statusRoll = Math.random();
+                if (statusRoll > 0.7 && statusRoll <= 0.9) {
+                    status = 'mia';
+                } else if (statusRoll > 0.9) {
+                    status = 'deceased';
+                }
+                
+                // Generate bio
+                const bioTemplate = bioTemplates[Math.floor(Math.random() * bioTemplates.length)];
+                const birthYear = Math.floor(Math.random() * 40) + 1960;
+                const recruitedYear = birthYear + Math.floor(Math.random() * 20) + 20;
+                const height = `${Math.floor(Math.random() * 30) + 160}cm`;
+                const weight = `${Math.floor(Math.random() * 40) + 60}kg`;
+                const yearsService = new Date().getFullYear() - recruitedYear;
+                const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+                const randomEducation = education[Math.floor(Math.random() * education.length)];
+                const randomClearance = clearanceLevels[Math.floor(Math.random() * clearanceLevels.length)];
+                const randomDate = `${Math.floor(Math.random() * 12) + 1}/${Math.floor(Math.random() * 28) + 1}/${Math.floor(Math.random() * 20) + 2000}`;
+                const randomPsych = psychProfiles[Math.floor(Math.random() * psychProfiles.length)];
+                
+                let bio = bioTemplate
+                    .replace('{YEAR}', birthYear)
+                    .replace('{LOCATION}', randomLocation)
+                    .replace('{HEIGHT}', height)
+                    .replace('{WEIGHT}', weight)
+                    .replace('{EDUCATION}', randomEducation)
+                    .replace('{CLEARANCE}', randomClearance)
+                    .replace('{DATE}', randomDate)
+                    .replace('{YEARS}', yearsService)
+                    .replace('{RECRUITED_YEAR}', recruitedYear)
+                    .replace('{AGENCY}', agencies[Math.floor(Math.random() * agencies.length)])
+                    .replace('{PSYCH}', randomPsych);
+                
+                // Generate background
+                const backgroundTemplate = backgroundTemplates[Math.floor(Math.random() * backgroundTemplates.length)];
+                
+                // Get unique specialties
+                let specialty1 = specialties[Math.floor(Math.random() * specialties.length)];
+                let specialty2;
+                do {
+                    specialty2 = specialties[Math.floor(Math.random() * specialties.length)];
+                } while (specialty2 === specialty1);
+                
+                // Get unique operations
+                let operation1 = operations[Math.floor(Math.random() * operations.length)];
+                let operation2;
+                do {
+                    operation2 = operations[Math.floor(Math.random() * operations.length)];
+                } while (operation2 === operation1);
+                
+                const randomIncident = incidents[Math.floor(Math.random() * incidents.length)];
+                const randomMilitary = military[Math.floor(Math.random() * military.length)];
+                const previousRoles = ["intelligence officer", "field researcher", "tactical specialist", "academic researcher", "law enforcement officer"];
+                const randomPreviousRole = previousRoles[Math.floor(Math.random() * previousRoles.length)];
+                
+                let background = backgroundTemplate
+                    .replace('{SPECIALTY1}', specialty1)
+                    .replace('{SPECIALTY2}', specialty2)
+                    .replace('{OPERATION1}', operation1)
+                    .replace('{OPERATION2}', operation2)
+                    .replace('{COMMENDATION}', "actions during " + operations[Math.floor(Math.random() * operations.length)])
+                    .replace('{INCIDENTS}', randomIncident)
+                    .replace('{PREVIOUS_ROLE}', randomPreviousRole)
+                    .replace('{MILITARY}', randomMilitary);
+                
+                // Generate last activity
+                const lastSeenTemplate = lastSeenTemplates[Math.floor(Math.random() * lastSeenTemplates.length)];
+                const lastDate = `${Math.floor(Math.random() * 12) + 1}/${Math.floor(Math.random() * 28) + 1}/${Math.floor(Math.random() * 5) + 2018}`;
+                const lastLocation = locations[Math.floor(Math.random() * locations.length)];
+                
+                let statusDetail;
+                if (status === 'active') {
+                    statusDetail = activeStatusDetails[Math.floor(Math.random() * activeStatusDetails.length)];
+                } else if (status === 'mia') {
+                    statusDetail = miaStatusDetails[Math.floor(Math.random() * miaStatusDetails.length)];
+                } else {
+                    statusDetail = deceasedStatusDetails[Math.floor(Math.random() * deceasedStatusDetails.length)];
+                }
+                
+                let lastActivity = lastSeenTemplate
+                    .replace('{DATE}', lastDate)
+                    .replace('{LOCATION}', lastLocation)
+                    .replace('{OPERATION}', operations[Math.floor(Math.random() * operations.length)])
+                    .replace('{STATUS_DETAIL}', statusDetail)
+                    .replace('{DEPARTMENT}', departments[Math.floor(Math.random() * departments.length)]);
+                
+                newAgents.push({
+                    id: agentId,
+                    name: `${firstName} ${lastName}`,
+                    prefix: prefix,
+                    department: department,
+                    status: status,
+                    bio: bio,
+                    background: background,
+                    lastActivity: lastActivity
+                });
+            }
+            
+            return newAgents;
+        }
+        
+        // Generate initial agents
+        agents = generateRandomAgents();
+        
         // SCP-style rare entries
         const rareEntries = [
             "WARNING: FILE RETRIEVAL ERROR. CONTAINMENT PROTOCOLS FOR SCP-████ MAY HAVE BEEN COMPROMISED. MOBILE TASK FORCE DISPATCHED TO YOUR LOCATION. DO NOT ATTEMPT TO LEAVE OR COMMUNICATE WITH OUTSIDE PARTIES.",
@@ -1075,8 +2012,32 @@
             "OBSERVATION: Statistical anomalies detected in global communication patterns. ECHELON system flagging possible memetic vector."
         ];
         
+        // Document stamp images using Base64 SVG
+        const stampImages = [
+            `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsIDAsIDAsIDAuNykiIHN0cm9rZS13aWR0aD0iMiIvPjxwYXRoIGQ9Ik0yNSA1MEg3NU0zMCAyNUw3MCA3NU03MCAyNUwzMCA3NU01MCAxNVY4NSIgc3Ryb2tlPSJyZ2JhKDI1NSwgMCwgMCwgMC43KSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iNTAiIHk9IjI1IiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyNTUsIDAsIDAsIDAuNykiPkNMQVNTSUZJRUQ8L3RleHQ+PHRleHQgeD0iNTAiIHk9IjgzIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyNTUsIDAsIDAsIDAuNykiPlRPUCBTRUNSRVQ8L3RleHQ+PC9zdmc+`,
+            `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgcj0iNDUiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyMTMsIDAsIDAsIDAuNykiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik0yMCA1MEg4ME0yMCA1MEg4MCIgc3Ryb2tlPSJyZ2JhKDIxMywgMCwgMCwgMC43KSIgc3Ryb2tlLXdpZHRoPSIyIi8+PHRleHQgeD0iNTAiIHk9IjQwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LXNpemU9IjE0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDIxMywgMCwgMCwgMC43KSI+Tk9UPC90ZXh0Pjx0ZXh0IHg9IjUwIiB5PSI2NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXdlaWdodD0iYm9sZCIgZm9udC1zaXplPSIxMiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0icmdiYSgyMTMsIDAsIDAsIDAuNykiPkZPUiBQVUJMSUM8L3RleHQ+PHRleHQgeD0iNTAiIHk9IjgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtd2VpZ2h0PSJib2xkIiBmb250LXNpemU9IjEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJyZ2JhKDIxMywgMCwgMCwgMC43KSI+RElTQ0xPU1VSRTwvdGV4dD48L3N2Zz4=`,
+            `data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3QgeD0iMTUiIHk9IjI1IiB3aWR0aD0iNzAiIGhlaWdodD0iNTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyMTMsIDAsIDAsIDAuNykiIHN0cm9rZS13aWR0aD0iMiIgcng9IjMiLz48dGV4dCB4PSI1MCIgeT0iNTAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjEzLCAwLCAwLCAwLjcpIj5NQUpFU1RJQzwvdGV4dD48dGV4dCB4PSI1MCIgeT0iNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9InJnYmEoMjEzLCAwLCAwLCAwLjcpIj4xMjwvdGV4dD48L3N2Zz4=`
+        ];
+        
         // Count how many times the button has been clicked
         let clickCount = 0;
+        
+        // Function to format time in HH:MM:SS
+        function formatTime(seconds) {
+            const hrs = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            
+            return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Update login timer
+        function updateLoginTimer() {
+            if (loginTime) {
+                const elapsedSeconds = Math.floor((Date.now() - loginTime) / 1000);
+                statusTime.textContent = `Login time: ${formatTime(elapsedSeconds)}`;
+            }
+        }
         
         // Function to make an element flicker
         function applyGlitchEffect() {
@@ -1201,6 +2162,23 @@
                 report += `<p><strong>${sectionParts[0]}:</strong>${sectionParts[1]}</p>`;
             });
             
+            // Add responsible agents
+            const randomAgents = [];
+            const agentCount = Math.floor(Math.random() * 3) + 1; // 1-3 agents
+            
+            for (let i = 0; i < agentCount; i++) {
+                if (agents.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * agents.length);
+                    randomAgents.push(agents[randomIndex]);
+                }
+            }
+            
+            if (randomAgents.length > 0) {
+                report += `<p><strong>PERSONNEL ASSIGNED:</strong><br>`;
+                report += randomAgents.map(agent => `${agent.prefix} ${agent.name} (ID: ${agent.id})`).join(', ');
+                report += `</p>`;
+            }
+            
             return report;
         }
         
@@ -1211,6 +2189,241 @@
             const day = Math.floor(Math.random() * 28) + 1; // Simplified to avoid invalid dates
             
             return `DATE: ${month.toString().padStart(2, '0')}/${day.toString().padStart(2, '0')}/${year}`;
+        }
+        
+        // Add random document artifacts
+        function addDocumentArtifacts() {
+            // Add random stamp
+            const stampImage = stampImages[Math.floor(Math.random() * stampImages.length)];
+            document.querySelector('.document-stamp').style.backgroundImage = `url(${stampImage})`;
+            
+            // Add random watermark
+            const watermarks = ["TOP SECRET", "CLASSIFIED", "EYES ONLY", "LEVEL 5", "MAJESTIC-12"];
+            document.querySelector('.document-watermark').textContent = watermarks[Math.floor(Math.random() * watermarks.length)];
+            
+            // Position coffee stain randomly
+            const coffeeStain = document.querySelector('.coffee-stain');
+            coffeeStain.style.top = `${Math.floor(Math.random() * 70) + 10}%`;
+            coffeeStain.style.left = `${Math.floor(Math.random() * 70) + 10}%`;
+            
+            // Position paper fold
+            const paperFold = document.querySelector('.paper-fold');
+            if (Math.random() < 0.5) {
+                // Top right corner
+                paperFold.style.top = '0';
+                paperFold.style.right = '0';
+                paperFold.style.left = 'auto';
+                paperFold.style.bottom = 'auto';
+            } else {
+                // Bottom left corner
+                paperFold.style.top = 'auto';
+                paperFold.style.right = 'auto';
+                paperFold.style.left = '0';
+                paperFold.style.bottom = '0';
+            }
+        }
+        
+        // Create photocopy of report
+        function createPhotocopy() {
+            // Convert the current report to an image
+            html2canvas(report, {
+                scale: 2,
+                logging: false,
+                backgroundColor: "#f5f5f5",
+                onrendered: function(canvas) {
+                    const imageData = canvas.toDataURL('image/png');
+                    photocopyImage.src = imageData;
+                    photocopyModal.style.display = 'flex';
+                }
+            });
+        }
+        
+        // Create photocopy of agent details
+        function createAgentPhotocopy() {
+            // Convert the agent detail container to an image
+            html2canvas(agentDetailContainer, {
+                scale: 2,
+                logging: false,
+                backgroundColor: "#1a2634",
+                onrendered: function(canvas) {
+                    const imageData = canvas.toDataURL('image/png');
+                    photocopyImage.src = imageData;
+                    photocopyModal.style.display = 'flex';
+                }
+            });
+        }
+        
+        // Function to render agent cards
+        function renderAgentCards(agentsList) {
+            agentGrid.innerHTML = '';
+            
+            agentsList.forEach(agent => {
+                const card = document.createElement('div');
+                card.className = 'agent-card';
+                card.dataset.agentId = agent.id;
+                
+                let statusClass = '';
+                let statusText = '';
+                
+                if (agent.status === 'active') {
+                    statusClass = 'status-active';
+                    statusText = 'Active';
+                } else if (agent.status === 'mia') {
+                    statusClass = 'status-mia';
+                    statusText = 'MIA';
+                } else {
+                    statusClass = 'status-deceased';
+                    statusText = 'Deceased';
+                }
+                
+                card.innerHTML = `
+                    <div class="agent-name">${agent.name}</div>
+                    <div class="agent-id">ID: ${agent.id}</div>
+                    <div>${agent.department}</div>
+                    <div class="agent-status ${statusClass}">${statusText}</div>
+                `;
+                
+                card.addEventListener('click', () => showAgentDetails(agent));
+                
+                agentGrid.appendChild(card);
+            });
+        }
+        
+        // Show agent details
+        function showAgentDetails(agent) {
+            // Set up agent detail modal
+            document.getElementById('agentDetailName').textContent = agent.name;
+            document.getElementById('agentDetailId').textContent = `ID: ${agent.id}`;
+            document.getElementById('agentDetailDepartment').textContent = agent.department;
+            document.getElementById('agentDetailBio').innerHTML = agent.bio;
+            document.getElementById('agentDetailBackground').innerHTML = agent.background;
+            document.getElementById('agentDetailLastActivity').innerHTML = agent.lastActivity;
+            
+            const statusEl = document.getElementById('agentDetailStatus');
+            statusEl.className = 'agent-detail-status-large';
+            
+            if (agent.status === 'active') {
+                statusEl.classList.add('status-active');
+                statusEl.textContent = 'Active';
+            } else if (agent.status === 'mia') {
+                statusEl.classList.add('status-mia');
+                statusEl.textContent = 'Missing In Action';
+            } else {
+                statusEl.classList.add('status-deceased');
+                statusEl.textContent = 'Deceased';
+            }
+            
+            // Show modal
+            agentDetailModal.style.display = 'flex';
+        }
+        
+        // Generate an agent with custom name
+        function generateCustomNameAgent(firstName, lastName) {
+            // Use first name as prefix and last name as suffix
+            const department = departments[Math.floor(Math.random() * departments.length)];
+            
+            // Generate agent ID
+            const agentId = Math.floor(Math.random() * 900000) + 100000;
+            
+            // Generate status (70% active, 20% MIA, 10% deceased)
+            let status = 'active';
+            const statusRoll = Math.random();
+            if (statusRoll > 0.7 && statusRoll <= 0.9) {
+                status = 'mia';
+            } else if (statusRoll > 0.9) {
+                status = 'deceased';
+            }
+            
+            // Generate bio
+            const bioTemplate = bioTemplates[Math.floor(Math.random() * bioTemplates.length)];
+            const birthYear = Math.floor(Math.random() * 40) + 1960;
+            const recruitedYear = birthYear + Math.floor(Math.random() * 20) + 20;
+            const height = `${Math.floor(Math.random() * 30) + 160}cm`;
+            const weight = `${Math.floor(Math.random() * 40) + 60}kg`;
+            const yearsService = new Date().getFullYear() - recruitedYear;
+            const randomLocation = locations[Math.floor(Math.random() * locations.length)];
+            const randomEducation = education[Math.floor(Math.random() * education.length)];
+            const randomClearance = clearanceLevels[Math.floor(Math.random() * clearanceLevels.length)];
+            const randomDate = `${Math.floor(Math.random() * 12) + 1}/${Math.floor(Math.random() * 28) + 1}/${Math.floor(Math.random() * 20) + 2000}`;
+            const randomPsych = psychProfiles[Math.floor(Math.random() * psychProfiles.length)];
+            
+            let bio = bioTemplate
+                .replace('{YEAR}', birthYear)
+                .replace('{LOCATION}', randomLocation)
+                .replace('{HEIGHT}', height)
+                .replace('{WEIGHT}', weight)
+                .replace('{EDUCATION}', randomEducation)
+                .replace('{CLEARANCE}', randomClearance)
+                .replace('{DATE}', randomDate)
+                .replace('{YEARS}', yearsService)
+                .replace('{RECRUITED_YEAR}', recruitedYear)
+                .replace('{AGENCY}', agencies[Math.floor(Math.random() * agencies.length)])
+                .replace('{PSYCH}', randomPsych);
+            
+            // Generate background
+            const backgroundTemplate = backgroundTemplates[Math.floor(Math.random() * backgroundTemplates.length)];
+            
+            // Get unique specialties
+            let specialty1 = specialties[Math.floor(Math.random() * specialties.length)];
+            let specialty2;
+            do {
+                specialty2 = specialties[Math.floor(Math.random() * specialties.length)];
+            } while (specialty2 === specialty1);
+            
+            // Get unique operations
+            let operation1 = operations[Math.floor(Math.random() * operations.length)];
+            let operation2;
+            do {
+                operation2 = operations[Math.floor(Math.random() * operations.length)];
+            } while (operation2 === operation1);
+            
+            const randomIncident = incidents[Math.floor(Math.random() * incidents.length)];
+            const randomMilitary = military[Math.floor(Math.random() * military.length)];
+            const previousRoles = ["intelligence officer", "field researcher", "tactical specialist", "academic researcher", "law enforcement officer"];
+            const randomPreviousRole = previousRoles[Math.floor(Math.random() * previousRoles.length)];
+            
+            let background = backgroundTemplate
+                .replace('{SPECIALTY1}', specialty1)
+                .replace('{SPECIALTY2}', specialty2)
+                .replace('{OPERATION1}', operation1)
+                .replace('{OPERATION2}', operation2)
+                .replace('{COMMENDATION}', "actions during " + operations[Math.floor(Math.random() * operations.length)])
+                .replace('{INCIDENTS}', randomIncident)
+                .replace('{PREVIOUS_ROLE}', randomPreviousRole)
+                .replace('{MILITARY}', randomMilitary);
+            
+            // Generate last activity
+            const lastSeenTemplate = lastSeenTemplates[Math.floor(Math.random() * lastSeenTemplates.length)];
+            const lastDate = `${Math.floor(Math.random() * 12) + 1}/${Math.floor(Math.random() * 28) + 1}/${Math.floor(Math.random() * 5) + 2018}`;
+            const lastLocation = locations[Math.floor(Math.random() * locations.length)];
+            
+            let statusDetail;
+            if (status === 'active') {
+                statusDetail = activeStatusDetails[Math.floor(Math.random() * activeStatusDetails.length)];
+            } else if (status === 'mia') {
+                statusDetail = miaStatusDetails[Math.floor(Math.random() * miaStatusDetails.length)];
+            } else {
+                statusDetail = deceasedStatusDetails[Math.floor(Math.random() * deceasedStatusDetails.length)];
+            }
+            
+            let lastActivity = lastSeenTemplate
+                .replace('{DATE}', lastDate)
+                .replace('{LOCATION}', lastLocation)
+                .replace('{OPERATION}', operations[Math.floor(Math.random() * operations.length)])
+                .replace('{STATUS_DETAIL}', statusDetail)
+                .replace('{DEPARTMENT}', departments[Math.floor(Math.random() * departments.length)]);
+            
+            // Create and return agent object
+            return {
+                id: agentId,
+                name: `${firstName} ${lastName}`,
+                prefix: firstName,
+                department: department,
+                status: status,
+                bio: bio,
+                background: background,
+                lastActivity: lastActivity
+            };
         }
         
         // Animation for accessing the files
@@ -1254,8 +2467,12 @@
                 fileNumber.textContent = caseNumber;
                 dateField.textContent = randomPastDate();
                 
-                // Show the report
+                // Add document artifacts
+                addDocumentArtifacts();
+                
+                // Show the report and photocopy button
                 report.classList.add('show');
+                photocopyBtn.style.display = 'block';
                 
                 // Re-enable button
                 accessBtn.disabled = false;
@@ -1303,12 +2520,15 @@
                     loginBtn.disabled = true;
                     userId.disabled = true;
                     password.disabled = true;
-                    authError.textContent = "ACCESS DENIED. System locked.";
+                    authError.textContent = "ACCESS DENIED. System locked. Refresh page to try again.";
                 }
                 
                 applyGlitchEffect();
                 return;
             }
+            
+            // Store user ID for display
+            window.userIdValue = userIdValue;
             
             // Hide form and show biometric scan
             document.querySelector('.auth-form').style.display = 'none';
@@ -1364,7 +2584,20 @@
                                             // Complete login and show main interface
                                             setTimeout(() => {
                                                 authScreen.classList.add('hidden');
+                                                
+                                                // Set up login timer
+                                                loginTime = Date.now();
+                                                statusUser.textContent = `Welcome, agent ${window.userIdValue}`;
+                                                updateLoginTimer();
+                                                
+                                                // Start timer update interval
+                                                loginTimer = setInterval(updateLoginTimer, 1000);
+                                                
+                                                // Setup notifications
                                                 setupNotifications();
+                                                
+                                                // Initial agent rendering
+                                                renderAgentCards(agents);
                                             }, 1500);
                                         }, 3000);
                                     })
@@ -1373,7 +2606,20 @@
                                         scanStatus.textContent = "FACIAL SCAN BYPASSED";
                                         setTimeout(() => {
                                             authScreen.classList.add('hidden');
+                                            
+                                            // Set up login timer
+                                            loginTime = Date.now();
+                                            statusUser.textContent = `Welcome, agent ${window.userIdValue}`;
+                                            updateLoginTimer();
+                                            
+                                            // Start timer update interval
+                                            loginTimer = setInterval(updateLoginTimer, 1000);
+                                            
+                                            // Setup notifications
                                             setupNotifications();
+                                            
+                                            // Initial agent rendering
+                                            renderAgentCards(agents);
                                         }, 1500);
                                     });
                             } else {
@@ -1381,13 +2627,119 @@
                                 scanStatus.textContent = "FACIAL SCAN UNAVAILABLE - BYPASSED";
                                 setTimeout(() => {
                                     authScreen.classList.add('hidden');
+                                    
+                                    // Set up login timer
+                                    loginTime = Date.now();
+                                    statusUser.textContent = `Welcome, agent ${window.userIdValue}`;
+                                    updateLoginTimer();
+                                    
+                                    // Start timer update interval
+                                    loginTimer = setInterval(updateLoginTimer, 1000);
+                                    
+                                    // Setup notifications
                                     setupNotifications();
+                                    
+                                    // Initial agent rendering
+                                    renderAgentCards(agents);
                                 }, 1500);
                             }
                         }, 1500);
                     }, 2000);
                 }, 1500);
             }, 2000);
+        }
+        
+        // Handle agent search form submission
+        function handleAgentSearch(event) {
+            event.preventDefault();
+            
+            const firstName = firstNameInput.value.trim();
+            const lastName = lastNameInput.value.trim();
+            
+            if (firstName && lastName) {
+                // Generate custom agent
+                const customAgent = generateCustomNameAgent(firstName, lastName);
+                
+                // Show the agent details immediately
+                showAgentDetails(customAgent);
+                
+                // Add agent to the database
+                agents.unshift(customAgent);
+                
+                // Clear the search form
+                firstNameInput.value = '';
+                lastNameInput.value = '';
+                agentSearchForm.classList.remove('visible');
+                
+                // Show notification
+                notificationContent.textContent = `Agent record found: ${firstName} ${lastName}, ID: ${customAgent.id}`;
+                notification.classList.add('show');
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 5000);
+                
+                // Re-render agent cards
+                renderAgentCards(agents);
+            }
+        }
+        
+        // Add a new agent to the database
+        function addNewAgent(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('addAgentName').value;
+            const department = document.getElementById('addAgentDepartment').value;
+            const status = document.getElementById('addAgentStatus').value;
+            const bio = document.getElementById('addAgentBio').value;
+            const background = document.getElementById('addAgentBackground').value;
+            const lastActivity = document.getElementById('addAgentLastActivity').value;
+            
+            // Generate a random agent ID
+            const agentId = Math.floor(Math.random() * 900000) + 100000;
+            
+            // Split name into first and last name
+            const nameParts = name.split(' ');
+            let firstName = '';
+            let lastName = '';
+            
+            if (nameParts.length >= 2) {
+                firstName = nameParts[0];
+                lastName = nameParts.slice(1).join(' ');
+            } else {
+                firstName = name;
+                lastName = '';
+            }
+            
+            // Create new agent object
+            const newAgent = {
+                id: agentId,
+                name: name,
+                prefix: firstName,
+                department: department,
+                status: status,
+                bio: bio,
+                background: background,
+                lastActivity: lastActivity
+            };
+            
+            // Add to agents array
+            agents.unshift(newAgent); // Add to beginning of array
+            
+            // Re-render agent cards
+            renderAgentCards(agents);
+            
+            // Close modal
+            agentAddModal.style.display = 'none';
+            
+            // Reset form
+            agentAddForm.reset();
+            
+            // Show notification
+            notificationContent.textContent = `New agent ${name} added to database with ID: ${agentId}`;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
         }
         
         // Event listener for login button
@@ -1409,6 +2761,64 @@
                 setCategory(btn.dataset.category);
             });
         });
+        
+        // Event listeners for tabs
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+        
+        // Event listener for open search button
+        openSearchBtn.addEventListener('click', () => {
+            agentSearchForm.classList.toggle('visible');
+        });
+        
+        // Event listener for agent search form
+        agentSearchForm.addEventListener('submit', handleAgentSearch);
+        
+        // Event listener for agent detail modal close
+        agentDetailClose.addEventListener('click', () => {
+            agentDetailModal.style.display = 'none';
+        });
+        
+        // Event listener for agent add button
+        agentAddBtn.addEventListener('click', () => {
+            agentAddModal.style.display = 'flex';
+        });
+        
+        // Event listener for agent add modal close
+        agentAddClose.addEventListener('click', () => {
+            agentAddModal.style.display = 'none';
+        });
+        
+        // Event listener for agent add form submission
+        agentAddForm.addEventListener('submit', addNewAgent);
+        
+        // Event listener for photocopy button
+        photocopyBtn.addEventListener('click', createPhotocopy);
+        
+        // Event listener for agent photocopy button
+        agentPhotocopyBtn.addEventListener('click', createAgentPhotocopy);
+        
+        // Event listener for photocopy modal close
+        photocopyClose.addEventListener('click', () => {
+            photocopyModal.style.display = 'none';
+        });
+        
+        // Set up html2canvas for document photocopying
+        function loadHTML2Canvas() {
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js';
+            document.head.appendChild(script);
+        }
+        
+        // Load html2canvas library
+        loadHTML2Canvas();
     </script>
 </body>
 </html>
